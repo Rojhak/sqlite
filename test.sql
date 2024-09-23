@@ -208,8 +208,22 @@ INSERT INTO Boxes (Code, Contents, Value,Warehouse) VALUES("H5RT", "Papers", 200
 --3.13 Reduce the value of all boxes by 15%.
 SELECT Contents, Value - Value*0.1 AS Reduced_Value FROM Boxes
 --3.14 Delete all records of boxes from saturated warehouses.
+DELETE FROM Boxes WHERE Boxes.Warehouse IN 
+ (SELECT Boxes.Warehouse FROM Boxes JOIN Warehouses ON Boxes.Warehouse = Warehouses.Code 
+GROUP BY Boxes.Warehouse, Warehouses.Capacity 
+HAVING COUNT(Boxes.Code) > Warehouses.Capacity;)
 --3.15 Remove all boxes with a value lower than $100.
+DELETE FROM Boxes WHERE Value < 100
 --3.16 Add Index for column "Warehouse" in table "boxes"
     -- !!!NOTE!!!: index should NOT be used on small tables in practice
+CREATE INDEX Index_Watenhause ON Boxes(Warehouse)
+SELECT * FROM Boxes 
+
+
+
 --3.17 Print all the existing indexes
+PRAGMA index_list('Boxes');
 --3.18 Remove (drop) the index you just created
+DROP INDEX IF EXISTS Index_Watenhouse;
+
+
