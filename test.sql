@@ -191,3 +191,25 @@ SELECT DISTINCT(Contents) FROM Boxes
 SELECT AVG(Value) as Avarege_Values FROM Boxes
 --3.5
 SELECT Warehouse, AVG(Value) FROM Boxes GROUP BY Warehouse
+--3.6
+SELECT Warehouse, AVG(Value) FROM Boxes GROUP BY Warehouse HAVING AVG(VALUE) > 150
+--3.7 Select the code of each box, along with the name of the city the box is located in.
+SELECT Boxes.Code, Warehouses.Location FROM Boxes JOIN Warehouses ON Boxes.Warehouse = Warehouses.Code 
+--3.8 Select the warehouse codes, along with the number of boxes in each warehouse. 
+SELECT Boxes.Warehouse, COUNT(Boxes.Code) AS Boxes_Count FROM Boxes GROUP BY Warehouse
+--3.9 Select the codes of all warehouses that are saturated 
+SELECT Boxes.Warehouse, COUNT(Boxes.Code) AS Boxes_Count FROM Boxes LEFT JOIN Warehouses ON Boxes.Warehouse= Warehouses.Code GROUP BY Boxes.Warehouse HAVING COUNT(Boxes.code) > Capacity
+--3.10 Select the codes of all the boxes located in Chicago.
+SELECT Warehouses.Code FROM Warehouses WHERE Location = "Chicago"
+--3.11 Create a new warehouse in New York with a capacity for 3 boxes.
+INSERT INTO Warehouses (Code, Location, Capacity) VALUES(6, "New York", 3)
+--3.12 Create a new box, with code "H5RT", containing "Papers" with a value of $200, and located in warehouse 2.
+INSERT INTO Boxes (Code, Contents, Value,Warehouse) VALUES("H5RT", "Papers", 200, 2)
+--3.13 Reduce the value of all boxes by 15%.
+SELECT Contents, Value - Value*0.1 AS Reduced_Value FROM Boxes
+--3.14 Delete all records of boxes from saturated warehouses.
+--3.15 Remove all boxes with a value lower than $100.
+--3.16 Add Index for column "Warehouse" in table "boxes"
+    -- !!!NOTE!!!: index should NOT be used on small tables in practice
+--3.17 Print all the existing indexes
+--3.18 Remove (drop) the index you just created
